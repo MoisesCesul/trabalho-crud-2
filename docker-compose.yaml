@@ -1,0 +1,21 @@
+services:
+  postgres:
+    container_name: fundamentos-backend-pg
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: fudamentos-backend
+      PGDATA: /data/postgres
+    volumes:
+      - ./data/pg:/data/postgres
+
+  cache:
+    container_name: fundamentos-backend-cache
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data

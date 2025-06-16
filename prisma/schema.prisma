@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  ELECTRONICS
+  FASHION
+  HOME
+  OTHER
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  price       Float
+  inStock     Int      @map("in_stock")
+  isAvailable Boolean  @default(true) @map("is_available")
+  category    Category
+  tags        String[]
+
+  orderItems  OrderItem[] 
+  models      Model[]   @relation("product_models")
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model Model {
+  id   String @id @default(uuid())
+  name String
+
+  products Product[] @relation("product_models")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("models")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+
+  profile   Profile?  // One-to-One
+  order     Order[]   // One-to-Many
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Profile {
+  id        String    @id @default(uuid())
+  avatarUrl String?   @map("avatar_url")
+
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@map("profiles")
+}
+
+model Order {
+  id          String    @id @default(uuid())
+  total       Float   
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  orderItems  OrderItem[]
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+model OrderItem {
+  orderId   String
+  productId String
+  quantity  Float   
+
+  order Order @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@id([orderId, productId])
+  @@map("order_items")
+}
