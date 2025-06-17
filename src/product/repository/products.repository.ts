@@ -1,14 +1,18 @@
 import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
+import { Model, Prisma, Product } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
 
 @Injectable()
 export class ProductsRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async findManyRecent(): Promise<Prisma.ProductUncheckedCreateInput[] | null> {
-    return await this.prisma.product.findMany();
-  }
+  async findManyRecent(): Promise<(Product & { models: Model[] })[]> {
+  return this.prisma.product.findMany({
+    include: {
+      models: true,
+    },
+  });
+}
 
   async findById(id: string): Promise<Prisma.ProductUncheckedCreateInput | null> {
     return await this.prisma.product.findUnique({
@@ -39,7 +43,7 @@ export class ProductsRepository {
     ]);
   }
 
-  async create(product: Prisma.ProductUncheckedCreateInput): Promise<void> {
+  async create(product: Prisma.ProductCreateInput): Promise<void> {
     await this.prisma.product.create({
       data: product,
     });

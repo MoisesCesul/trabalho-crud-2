@@ -13,11 +13,12 @@ import { FetchRecentProductsService } from "./service/fetch-recent-products.serv
 import { GetProductByIdService } from "./service/get-product-by-id.service";
 import { UpdateAvailableProductService } from "./service/update-available-product.service";
 import { ProductsRepository } from "./repository/products.repository";
+import { ModelsRepository } from "src/model/repository/models.repository";
 
 
 @Module({
   imports: [],
   controllers: [CreateProductController, DeleteProductController, EditProductController, FetchRecentProductsController, GetProductByIdController, UpdateAvailableProductController],
-  providers: [PrismaService, CreateProductService, DeleteProductService, EditProductService, FetchRecentProductsService, GetProductByIdService, UpdateAvailableProductService, ProductsRepository],
+  providers: [PrismaService, CreateProductService, DeleteProductService, EditProductService, FetchRecentProductsService, GetProductByIdService, UpdateAvailableProductService, ProductsRepository,ModelsRepository],
 })
 export class ProductModule {}

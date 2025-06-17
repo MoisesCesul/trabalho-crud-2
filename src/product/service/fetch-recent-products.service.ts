@@ -13,6 +13,7 @@ export interface Product {
   tags: string[];
   createdAt: string | Date | undefined;
   updatedAt: string | Date | null | undefined;
+  model: {}[];
 }
 
 type FetchRecentProductsServiceResponse = {
@@ -44,6 +45,7 @@ export class FetchRecentProductsService {
         tags: product.tags as string[],
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
+        model: product.models
       });
     }
 

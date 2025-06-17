@@ -12,6 +12,7 @@ const createProductBodySchema = z.object({
   isAvailable: z.boolean(),
   category: z.enum([Category.ELECTRONICS, Category.OTHER]),
   tags: z.array(z.string()),
+  modelId: z.string().optional(),
 });
 
 const bodyValidationPipe = new ZodValidationPipe(createProductBodySchema);
@@ -33,6 +34,7 @@ export class CreateProductController {
       isAvailable,
       category,
       tags,
+      modelId
     } = body;
 
     await this.createProduct.execute({
@@ -43,6 +45,7 @@ export class CreateProductController {
       isAvailable,
       category,
       tags,
+      modelId: modelId ? modelId : undefined,
     });
   }
 }
