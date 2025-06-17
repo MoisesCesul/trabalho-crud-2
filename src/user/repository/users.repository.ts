@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
+import { Prisma,User,Order } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
 
 @Injectable()
@@ -58,6 +58,21 @@ export class UserRepository {
     });
 
     return product;
+  }
+
+  async findOrdersByUserId(id:string){
+    const user = await this.prisma.user.findUnique({
+      where:{
+        id
+      },
+      include:{
+        order:true
+      }
+    })
+    if(!user){
+      throw new Error("User not found")
+    }
+    return user.order;
   }
 
 }

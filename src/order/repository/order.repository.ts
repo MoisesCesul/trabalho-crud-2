@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Order, Prisma } from "@prisma/client";
+import { Order, Prisma, OrderItem,Product } from "@prisma/client";
 import { PrismaService } from "src/prisma.service";
 
 interface OrderWithItems {
@@ -9,8 +9,12 @@ interface OrderWithItems {
   createdAt: Date;
   updatedAt: Date | null;
   orderItems: {
+    createdAt: Date;
+    updatedAt: Date | null;
+    orderId: string;
     productId: string;
-    quantity: number;
+    quantity: number;  
+
   }[];
 }
 
@@ -30,6 +34,9 @@ export class OrdersRepository {
         select: {
           productId: true,
           quantity: true,
+          createdAt:true,
+          updatedAt:true,
+          product:true,
         },
       },
     },
@@ -44,8 +51,7 @@ export class OrdersRepository {
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
     orderItems: order.orderItems.map(item => ({
-      productId: item.productId,
-      quantity: item.quantity,
+      item
     })),
   };
 }

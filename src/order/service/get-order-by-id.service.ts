@@ -1,17 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
 import { OrdersRepository } from "../repository/order.repository";
-export interface Order {
-  id: string;
-  total: number;
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  orderItems: {
-    productId: string;
-    quantity: number;
-  }[];
-}
+
 
 
 interface GetOrdersByIdServiceRequest {

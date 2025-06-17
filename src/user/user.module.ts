@@ -13,10 +13,12 @@ import { UpdateProfileUserService } from "./service/update-profile-user.service"
 import { PrismaService } from "src/prisma.service";
 import { UserRepository } from "./repository/users.repository";
 import { ProfileRepository } from "src/profile/repository/profile.repository";
+import { GetOrdersByUserIdController } from "./controller/get-orders-by-user-id.controller";
+import { GetOrderByUserIdService } from "./service/get-orders-by-id-user.service";
 
 @Module({
   imports: [ProfileModule],
-  controllers: [CreateUserController,DeleteUserController,EditUserController,GetUsersByIdController,UpdateProfileUserController, ],
-  providers: [PrismaService,CreateUserService,DeleteUserService,EditUsersService,GetUserByIdService,UpdateProfileUserService,UserRepository,ProfileRepository],
+  controllers: [CreateUserController,DeleteUserController,EditUserController,GetUsersByIdController,UpdateProfileUserController,GetOrdersByUserIdController ],
+  providers: [PrismaService,CreateUserService,DeleteUserService,EditUsersService,GetUserByIdService,UpdateProfileUserService,UserRepository,ProfileRepository,GetOrderByUserIdService],
 })
 export class UserModule {}
