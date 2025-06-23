@@ -1,6 +1,4 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { GetUserByIdService } from "../service/get-user-by-id.service";
-import { GetOrderByIdService } from "src/order/service/get-order-by-id.service";
 import { GetOrderByUserIdService } from "../service/get-orders-by-id-user.service";
 
 @Controller('/users/:id/orders')
