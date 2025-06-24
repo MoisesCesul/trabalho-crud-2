@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { AlreadyExistException } from "src/exception/AlreadyExistException";
 import { ProfileRepository } from "src/profile/repository/profile.repository";
 import { UserRepository } from "src/user/repository/users.repository";
 
@@ -25,7 +26,7 @@ export class UpdateProfileUserService {
 
     const profile = await this.profileRepository.findByUserId(userId);
     if (profile) {
-      throw new Error("User already has a profile");
+      throw new AlreadyExistException("User already has a profile");
     }
 
     const newProfile = {

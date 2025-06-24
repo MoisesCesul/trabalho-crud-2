@@ -9,8 +9,19 @@ export class DeleteUserController {
   @Delete()
   @HttpCode(204)
   async handle(@Param("id") id: string) {
-    await this.deleteUser.execute({
+    try {
+      await this.deleteUser.execute({
       id,
     });
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          statusCode: 404,
+          message: error.message,
+        };
+      }
+      
+    }
+  
   }
 }

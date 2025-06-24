@@ -1,6 +1,5 @@
 import { Body, Controller, HttpCode, Post } from "@nestjs/common";
 import { z } from "zod";
-import { Category } from "@prisma/client";
 import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
 import { CreateUserService } from "../service/create-user.service";
 
@@ -22,10 +21,19 @@ export class CreateUserController {
     const {
       email,
     } = body;
-
+    try {
     await this.createUser.execute({
       email,
      
     });
+  } catch (error) {
+      if (error instanceof Error) {
+       return {
+          statusCode: 400,
+          message: error.message,
+        };
+      }
+      
+    }
   }
 }

@@ -11,9 +11,17 @@ export class GetProfileByIdController {
     const users = await this.getUserById.execute({
       id,
     });
-
-    return {
+    try {
+       return {
       users
     };
+    } catch (error) {
+      return {
+        statusCode: 404,
+        error: error.message
+      };
+      
+    }
+   
   }
 }

@@ -2,6 +2,7 @@ import { Body, Controller, HttpCode, Put } from "@nestjs/common";
 import { ZodValidationPipe } from "src/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { UpdateProfileUserService } from "../service/create-profile.service";
+import { AlreadyExistException } from "src/exception/AlreadyExistException";
 
 const updateProfileUserBodySchema = z.object({
   userId :z.string(),
@@ -28,11 +29,22 @@ export class CreateProfileUserController {
       avatarUrl
     } = body;
 
-  
+    try {
       await this.updateProfileUser.execute({
         userId,
         avatarUrl,
       });
+    } catch (error) {
+      if (error instanceof AlreadyExistException) {
+        return error.retornoJson;
+      }
+      if (error instanceof Error) {
+        return {
+          statusCode: 404,
+          message: error.message,
+        };
+      }
+    }
    
   }
 }

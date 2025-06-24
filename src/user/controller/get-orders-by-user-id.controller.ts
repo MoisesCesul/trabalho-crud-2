@@ -7,12 +7,25 @@ export class GetOrdersByUserIdController {
 
   @Get()
   async handle(@Param("id") id: string) {
+    try {
+      
+    } catch (error) { {
+      if (error instanceof Error) {
+        return {
+          statusCode: 404,
+          error: error.message,
+        };
+      }
+      
+      
+    }
     const users = await this.getUserById.execute({
       id,
     });
-
+  
     return {
       users
     };
   }
+}
 }

@@ -15,7 +15,7 @@ type EditProfileBodySchema = z.infer<typeof editProfileBodySchema>;
 
 @Controller('/profile/:id')
 export class EditProfileController {
-  constructor(private editUser: EditProfilesService) {}
+  constructor(private editUser: EditProfilesService) { }
 
   @Put()
   @HttpCode(204)
@@ -26,10 +26,20 @@ export class EditProfileController {
     const {
       avatarUrl,
     } = body;
+    try {
+      await this.editUser.execute({
+        avatarUrl,
+        id
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          statusCode: 404,
+          message: error.message,
+        };
+      }
 
-    await this.editUser.execute({
-     avatarUrl,
-     id
-    });
+    }
+
   }
 }

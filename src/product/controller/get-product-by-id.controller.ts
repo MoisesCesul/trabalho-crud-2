@@ -3,16 +3,24 @@ import { GetProductByIdService } from "../service/get-product-by-id.service";
 
 @Controller('/products/:id')
 export class GetProductByIdController {
-  constructor(private getProductById: GetProductByIdService) {}
+  constructor(private getProductById: GetProductByIdService) { }
 
   @Get()
   async handle(@Param("id") id: string) {
-    const product = await this.getProductById.execute({
-      id,
-    });
+    try {
+      const product = await this.getProductById.execute({
+        id,
+      });
 
-    return {
-      product
-    };
+      return {
+        product
+      };
+    } catch (error) {
+      return {
+        error: error.message || "An unexpected error occurred",
+        status: 404
+      };
+    }
+
   }
 }

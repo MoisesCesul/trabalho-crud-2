@@ -16,7 +16,7 @@ export class CreateUserService {
     const userWithSameEmail = await this.userRepository.findByEmail(email);
 
     if (userWithSameEmail) {
-      throw new Error("User already exists");
+      throw new Error("User with this email already exists");
     }
 
     const user = {

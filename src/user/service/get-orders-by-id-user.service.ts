@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma, Order } from "@prisma/client";
 import { UserRepository } from "../repository/users.repository";
+import { AlreadyExistException } from "src/exception/AlreadyExistException";
 
 
 interface GetUserOrdersByIdServiceRequest {
@@ -20,7 +21,7 @@ export class GetOrderByUserIdService {
     const orders = await this.userRepository.findOrdersByUserId(id);
 
     if (!orders) {
-      throw new Error("User not found");
+      throw new AlreadyExistException("User not found");
     }
 
 

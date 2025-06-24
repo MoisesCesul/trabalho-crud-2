@@ -3,16 +3,24 @@ import { GetUserByIdService } from "../service/get-user-by-id.service";
 
 @Controller('/users/:id')
 export class GetUsersByIdController {
-  constructor(private getUserById: GetUserByIdService) {}
+  constructor(private getUserById: GetUserByIdService) { }
 
   @Get()
   async handle(@Param("id") id: string) {
-    const users = await this.getUserById.execute({
-      id,
-    });
 
-    return {
-      users
-    };
+    try {
+      const users = await this.getUserById.execute({
+        id,
+      });
+      return {
+        users
+      };
+    } catch (error) {
+      return {
+        statusCode: 404,
+        error: error.message
+      };
+    }
+
   }
 }

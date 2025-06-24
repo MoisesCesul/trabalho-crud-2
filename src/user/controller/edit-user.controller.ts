@@ -24,10 +24,19 @@ export class EditUserController {
     const {
       email,
     } = body;
-
-    await this.editUser.execute({
+    try {
+      await this.editUser.execute({
      email,
      id
     });
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          statusCode: 404,
+          message: error.message,
+        };
+      }
+    }
+    
   }
 }

@@ -3,12 +3,20 @@ import { GetOrderByIdService } from "../service/get-order-by-id.service";
 
 @Controller('/orders/:id')
 export class GetOrderByIdController {
-  constructor(private getOrderByIdService: GetOrderByIdService) {}
+  constructor(private getOrderByIdService: GetOrderByIdService) { }
 
   @Get()
   async handle(@Param("id") id: string) {
-    const order = await this.getOrderByIdService.execute({ id });
+    try {
+      const order = await this.getOrderByIdService.execute({ id });
 
-    return { order };
+      return { order };
+    } catch (error) {
+      return {
+        error: error.message || "An unexpected error occurred",
+        status: 404
+      };
+    }
+
   }
 }
